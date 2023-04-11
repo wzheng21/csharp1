@@ -9,4 +9,6 @@ Under csharp1 folder:
 
 -- Program.cs: top-level setup and teardown for SolidWorks applications
 
--- MatesLooper.cs: API experiment to iterate over mates and entities.
+-- MateEntityInfo.cs: MateEntityInfo class to contain any related data structures for MateEntity.
+
+-- MateEntityHandler.cs: processes input assembly model and collect entity info
