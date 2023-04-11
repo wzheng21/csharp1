@@ -7,4 +7,5 @@ On the other hand, C# API is very friendly for developers.
 
 Under csharp1 folder:
 -- Program.cs: top-level setup and teardown for SolidWorks applications
+
 -- MatesLooper.cs: API experiment to iterate over mates and entities.
