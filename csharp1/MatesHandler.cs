@@ -15,9 +15,11 @@ namespace csharp1
             int errors = 0;
             int warnings = 0;
             model = (ModelDoc2)app.OpenDoc6(filename, (int)swDocumentTypes_e.swDocASSEMBLY, (int)swOpenDocOptions_e.swOpenDocOptions_Silent, "", ref errors, ref warnings);
+            entities = new Dictionary<string, MateEntityInfo>();
         }
         private ModelDoc2 model;
         private Feature mate_feature;
+        private Dictionary<string, MateEntityInfo> entities;
 
         public void Run()
         {
@@ -53,16 +55,18 @@ namespace csharp1
                 Console.WriteLine(String.Format("Feature name: {0}", feature.Name));
                 int n_ent = mate.GetMateEntityCount();
                 var mate_type = (swMateType_e)mate.Type;
+                Feature mf = (Feature)mate;
+                Console.WriteLine(String.Format("-- Mate name: {0}", mf.Name));
                 Console.WriteLine(String.Format("-- Mate type str: {0}", mate_type.ToString()));
                 Console.WriteLine(String.Format("-- MateEntityCount: {0}\n", n_ent));
                 for (int i = 0; i < n_ent; i++)
                 {
                     MateEntity2 ent = mate.MateEntity(i);
-                    Component2 comp = (Component2)ent.ReferenceComponent;
-                    Console.WriteLine(String.Format("---- Entity {0}", i));
-                    Console.WriteLine(String.Format("---- Component name: {0}", comp.Name2));
-                    var entity_ref_type = (swMateEntity2ReferenceType_e)ent.ReferenceType2;
-                    Console.WriteLine(String.Format("---- Entity type str: {0}\n", entity_ref_type.ToString()));
+                    var info = new MateEntityInfo(i, mate);
+                    entities[info.name] = info;
+                    Console.WriteLine(String.Format("---- Entity {0}, name: {1}", i, entities[info.name].name));
+                    Console.WriteLine(String.Format("---- Component name: {0}", entities[info.name].component_name));
+                    Console.WriteLine(String.Format("---- Entity type str: {0}\n", entities[info.name].type.ToString()));
                 }
                 feature = feature.GetNextSubFeature();
             }

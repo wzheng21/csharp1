@@ -10,16 +10,19 @@ namespace csharp1
 {
     internal class MateEntityInfo
     {
-        public MateEntityInfo(MateEntity2 entity) 
+        public MateEntityInfo(int idx, Mate2 mate) 
         {
-            this.entity = entity;
-            this.mate = entity.Reference;
+            this.mate = mate;
+            this.entity = mate.MateEntity(idx);
             this.component = entity.ReferenceComponent;
 
             // Additional properties
             this.type = (swMateEntity2ReferenceType_e)entity.ReferenceType2;
             this.mate_type = (swMateType_e)mate.Type;
-            this.name = entity.ToString();
+            this.mate_name = ((Feature)mate).Name;
+            this.component_name = component.Name2;
+            this.name = String.Format("Component_{0}-Mate_{1}-Entity_{2}",
+                                      component_name, mate_name, idx);
         }
 
         public MateEntity2 entity { get; }
@@ -33,5 +36,9 @@ namespace csharp1
         public swMateType_e mate_type { get; }
 
         public string name { get; }
+
+        public string mate_name { get; }
+
+        public string component_name { get; }
     }
 }
