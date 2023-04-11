@@ -8,9 +8,9 @@ using SolidWorks.Interop.swconst;
 
 namespace csharp1
 {
-    internal class MatesLooper
+    internal class MatesHandler
     {
-        public MatesLooper(SldWorks app, string filename)
+        public MatesHandler(SldWorks app, string filename)
         {
             int errors = 0;
             int warnings = 0;

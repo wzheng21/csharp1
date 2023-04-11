@@ -20,8 +20,8 @@ namespace csharp1
             Console.WriteLine("Filename:");
             Console.WriteLine(filename);
 
-            MatesLooper looper = new MatesLooper((SldWorks)app, (string)filename);
-            looper.Run();
+            MatesHandler handler = new MatesHandler((SldWorks)app, (string)filename);
+            handler.Run();
 
             app.ExitApp();
             app = null;
