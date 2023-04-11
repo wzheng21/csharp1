@@ -25,6 +25,8 @@ namespace csharp1
             IterateOverMates();
         }
 
+        // SolidWorks store mate related info as one of the features. This function goes through
+        // features and find the mate feature
         private void FindMateFeature()
         {
             Console.WriteLine("Finding mate feature");
@@ -41,6 +43,7 @@ namespace csharp1
             Console.WriteLine("Found mate feature\n\n");
         }
 
+        // Iterate over all mates and entities and collect them in dictionary
         private void IterateOverMates() {
             Feature feature = mate_feature.GetFirstSubFeature();
             while (feature != null)
@@ -59,7 +62,6 @@ namespace csharp1
                     Console.WriteLine(String.Format("---- Entity {0}", i));
                     Console.WriteLine(String.Format("---- Component name: {0}", comp.Name2));
                     var entity_ref_type = (swMateEntity2ReferenceType_e)ent.ReferenceType2;
-                    //var entity_ref_type = ent.ReferenceType2;
                     Console.WriteLine(String.Format("---- Entity type str: {0}\n", entity_ref_type.ToString()));
                 }
                 feature = feature.GetNextSubFeature();
