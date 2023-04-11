@@ -49,7 +49,8 @@ namespace csharp1
                 if (mate == null) continue;
                 Console.WriteLine(String.Format("Feature name: {0}", feature.Name));
                 int n_ent = mate.GetMateEntityCount();
-                Console.WriteLine(String.Format("-- Mate type: {0}", mate.Type));
+                var mate_type = (swMateType_e)mate.Type;
+                Console.WriteLine(String.Format("-- Mate type str: {0}", mate_type.ToString()));
                 Console.WriteLine(String.Format("-- MateEntityCount: {0}\n", n_ent));
                 for (int i = 0; i < n_ent; i++)
                 {
@@ -57,8 +58,9 @@ namespace csharp1
                     Component2 comp = (Component2)ent.ReferenceComponent;
                     Console.WriteLine(String.Format("---- Entity {0}", i));
                     Console.WriteLine(String.Format("---- Component name: {0}", comp.Name2));
-                    Console.WriteLine(String.Format("---- Entity type: {0}\n", ent.ReferenceType));
-
+                    var entity_ref_type = (swMateEntity2ReferenceType_e)ent.ReferenceType2;
+                    //var entity_ref_type = ent.ReferenceType2;
+                    Console.WriteLine(String.Format("---- Entity type str: {0}\n", entity_ref_type.ToString()));
                 }
                 feature = feature.GetNextSubFeature();
             }
