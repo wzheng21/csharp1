@@ -1,0 +1,67 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SolidWorks.Interop.sldworks;
+using SolidWorks.Interop.swconst;
+
+namespace csharp1
+{
+    internal class MatesLooper
+    {
+        public MatesLooper(SldWorks app, string filename)
+        {
+            int errors = 0;
+            int warnings = 0;
+            model = (ModelDoc2)app.OpenDoc6(filename, (int)swDocumentTypes_e.swDocASSEMBLY, (int)swOpenDocOptions_e.swOpenDocOptions_Silent, "", ref errors, ref warnings);
+        }
+        private ModelDoc2 model;
+        private Feature mate_feature;
+
+        public void Run()
+        {
+            FindMateFeature();
+            IterateOverMates();
+        }
+
+        private void FindMateFeature()
+        {
+            Console.WriteLine("Finding mate feature");
+            Feature feature = (Feature)model.FirstFeature();
+            while (feature != null) {
+                if ("MateGroup" == feature.GetTypeName()) {
+                    mate_feature = feature;
+                    Console.WriteLine(String.Format("mate feature: {0}", mate_feature.Name));
+                    break;
+                }
+                Console.WriteLine(String.Format("feature: {0}", feature.Name));
+                feature = feature.GetNextFeature();
+            }
+            Console.WriteLine("Found mate feature\n\n");
+        }
+
+        private void IterateOverMates() {
+            Feature feature = mate_feature.GetFirstSubFeature();
+            while (feature != null)
+            {
+                Mate2 mate = feature.GetSpecificFeature2();
+                if (mate == null) continue;
+                Console.WriteLine(String.Format("Feature name: {0}", feature.Name));
+                int n_ent = mate.GetMateEntityCount();
+                Console.WriteLine(String.Format("-- Mate type: {0}", mate.Type));
+                Console.WriteLine(String.Format("-- MateEntityCount: {0}\n", n_ent));
+                for (int i = 0; i < n_ent; i++)
+                {
+                    MateEntity2 ent = mate.MateEntity(i);
+                    Component2 comp = (Component2)ent.ReferenceComponent;
+                    Console.WriteLine(String.Format("---- Entity {0}", i));
+                    Console.WriteLine(String.Format("---- Component name: {0}", comp.Name2));
+                    Console.WriteLine(String.Format("---- Entity type: {0}\n", ent.ReferenceType));
+
+                }
+                feature = feature.GetNextSubFeature();
+            }
+        }
+    }
+}
